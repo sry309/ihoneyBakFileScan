@@ -142,4 +142,4 @@ pip3.5 install requests
 ##### 2018年06月16日17:23:03
 
 
-![](https://raw.githubusercontent.com/ihoenysec/polls/master/mysite/static/django.png)
+![](https://b-ssl.duitang.com/uploads/item/201607/27/20160727140514_BS4eV.thumb.700_0.jpeg)
