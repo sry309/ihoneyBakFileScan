@@ -1,5 +1,7 @@
 # ihoneyBakFileScan v0.1 一个网站备份文件泄露扫描工具
-[![Python3](https://img.shields.io/badge/python-3.5-green.svg?style=plastic)](https://www.python.org/)
+[![python3](https://img.shields.io/badge/python-3.5.3-brightgreen.svg?style=plastic)](https://www.python.org/)
+[![requests](https://img.shields.io/badge/requests-2.19.1-brightgreen.svg?longCache=true&style=plastic)](http://www.python-requests.org/)
+[![pip3.5](https://img.shields.io/badge/pip3.5-10.0.1-brightgreen.svg?longCache=true&style=plastic)](https://pypi.org/project/pip/)
 
 ## 1. 简介
 
@@ -11,8 +13,19 @@
 4. 该备份文件被下载后，可以被用来做代码审计，进而造成更大的危害
 5. 该信息泄露会暴露服务器的敏感信息，使攻击者能够通过泄露的信息进行进一步入侵。
 ```
+##### 1.2 依赖环境
+```
+开发环境：
+python3   python3.5.3
+pip3.5    pip 10.0.1
+requests  2.19.1
+```
+```
+安装第三方依赖库：
+pip3.5 install requests
+```
 
-##### 1.2 工具核心：
+##### 1.3 工具核心：
 ```
 1. 常见后缀：
    * '.rar', '.sql', '.zip', '.gz', '.sql.gz', '.tar.gz', '.bak', '.sql.bak' ...
@@ -110,6 +123,7 @@
 ```
 
 ## 3. ChangeLog:
+```
 * 2018.04.20  首发T00ls：支持rar,zip后缀备份文件头识别，根据域名自动生成相关扫描字典，自动记录扫描成功的备份地址到文件
 * 2018.04.26
               在原本扫描成功的备份地址后增加了备份大小，以方便快速识别有效备份。
@@ -117,3 +131,13 @@
 * 2018.05.19  新增识别Adminer导出的两种格式：baidu.sql、baodu.sql.gz
 * 2018.05.31  新增Navicat MySQL Data Transfer备份导出方式和另一种未知导出方式
 * 2018.06.16  修复支持https站扫描，并从旧项目中抽出来独立作为一个项目
+```
+
+## 4. 联系
+```
+* 在使用工具的过程中遇到任何异常、问题，或者你有更好的建议都可以联系作者，一起将这款不出名的小工具完善下去。
+* 联系方式： QQ 102505481
+```
+
+
+##### 2018年06月16日17:23:03
