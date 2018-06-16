@@ -30,7 +30,8 @@ class BakScan(Thread):
                 rarsize = int(r.headers.get('Content-Length')) // 1024 // 1024
                 if content.startswith('526172') or content.startswith('504b03') or content.startswith('1f8b080000000000000b') or content.startswith('2d2d204d7953514c') or content.startswith(
                         '2d2d207068704d794164') or content.startswith('2f2a0a204e6176696361') or content.startswith('2d2d2041646d696e6572') or content.startswith(
-                    '2d2d202d2d2d2d2d2d2d') or content.startswith('2f2a0a4e617669636174') or url.endswith('.sql') or url.endswith('.sql.bak') or url.endswith('.bak'):
+                    '2d2d202d2d2d2d2d2d2d') or content.startswith('2f2a0a4e617669636174'):
+                    #  or url.endswith('.sql') or url.endswith('.sql.bak') or url.endswith('.bak')
                     logging.warning('[*] {}  size:{}M'.format(url, rarsize))
                     with open(datefile, 'a') as f:
                         try:
