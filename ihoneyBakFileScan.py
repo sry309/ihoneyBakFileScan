@@ -3,8 +3,7 @@
 import requests
 import logging
 from binascii import b2a_hex
-from queue import Queue
-from threading import Thread
+import multiprocessing
 from argparse import ArgumentParser
 from copy import deepcopy
 from datetime import datetime
@@ -14,44 +13,29 @@ requests.packages.urllib3.disable_warnings()
 logging.basicConfig(level=logging.WARNING, format="%(message)s")
 
 
-class BakScan(Thread):
-    def __init__(self, queue):
-        Thread.__init__(self)
-        self.queue = queue
-        self.headers = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36", }
-        self.timeout = 5  # The 3 seconds test is missing
+def vlun(urltarget, df):
+    try:
+        r = requests.get(url=urltarget, headers=headers, timeout=timeout, allow_redirects=False, stream=True, verify=False)
+        content = b2a_hex(r.raw.read(10)).decode()
 
-    def _auth(self, url):
-        try:
-            r = requests.get(url=url, headers=self.headers, timeout=self.timeout, allow_redirects=False, stream=True, verify=False)
-
-            content = b2a_hex(r.raw.read(10)).decode()
-            if r.status_code == 200:
-                rarsize = int(r.headers.get('Content-Length')) // 1024 // 1024
-                if content.startswith('526172') or content.startswith('504b03') or content.startswith('1f8b080000000000000b') or content.startswith('2d2d204d7953514c') or content.startswith(
-                        '2d2d207068704d794164') or content.startswith('2f2a0a204e6176696361') or content.startswith('2d2d2041646d696e6572') or content.startswith(
-                    '2d2d202d2d2d2d2d2d2d') or content.startswith('2f2a0a4e617669636174'):
-                    #  or url.endswith('.sql') or url.endswith('.sql.bak') or url.endswith('.bak')
-                    logging.warning('[*] {}  size:{}M'.format(url, rarsize))
-                    with open(datefile, 'a') as f:
-                        try:
-                            f.write(str(url) + '  ' + 'size:' + str(rarsize) + 'M' + '\n')
-                        except:
-                            pass
-                else:
-                    logging.warning('[ ] {}'.format(url))
+        if r.status_code == 200:
+            rarsize = int(r.headers.get('Content-Length')) // 1024 // 1024
+            if content.startswith('526172') or content.startswith('504b03') or content.startswith('1f8b080000000000000b') or content.startswith('2d2d204d7953514c') or content.startswith(
+                    '2d2d207068704d794164') or content.startswith('2f2a0a204e6176696361') or content.startswith('2d2d2041646d696e6572') or content.startswith(
+                '2d2d202d2d2d2d2d2d2d') or content.startswith('2f2a0a4e617669636174'):
+                #  or url.endswith('.sql') or url.endswith('.sql.bak') or url.endswith('.bak')
+                logging.warning('[*] {}  size:{}M'.format(urltarget, rarsize))
+                with open(df, 'a') as f:
+                    try:
+                        f.write(str(urltarget) + '  ' + 'size:' + str(rarsize) + 'M' + '\n')
+                    except:
+                        pass
             else:
-                logging.warning('[ ] {}'.format(url))
-        except Exception as e:
-            pass
-
-    def run(self):
-        while not self.queue.empty():
-            url = self.queue.get()
-            try:
-                self._auth(url)
-            except:
-                continue
+                logging.warning('[ ] {}'.format(urltarget))
+        else:
+            logging.warning('[ ] {}'.format(urltarget))
+    except Exception as e:
+        pass
 
 
 def urlcheck(target=None, ulist=None):
@@ -90,7 +74,8 @@ def dispatcher(url_file=None, url=None, max_thread=1, dic=None):
     with open(datefile, 'w'):
         pass
 
-    q = Queue()
+    # MultiProcess
+    pool = multiprocessing.Pool(max_thread)
 
     for u in urllist:
         ucp = u.strip('http://').strip('https://').strip('/')
@@ -101,7 +86,7 @@ def dispatcher(url_file=None, url=None, max_thread=1, dic=None):
             wwwhost += www1[i]
 
         current_info_dic = deepcopy(dic)  # deep copy
-        suffixFormat = ['.rar', '.sql', '.zip', '.gz', '.sql.gz', '.tar.gz', '.bak', '.sql.bak']
+        suffixFormat = ['.rar', '.zip', '.gz', '.sql.gz', '.tar.gz', ]
         domainDic = [ucp, ucp.replace('.', ''), wwwhost, ucp.split('.', 1)[-1], www1[0], www1[1]]
 
         for s in suffixFormat:
@@ -110,16 +95,11 @@ def dispatcher(url_file=None, url=None, max_thread=1, dic=None):
 
         for info in current_info_dic:
             url = str(u) + str(info)
-            q.put(url)
+            pool.apply_async(vlun, args=(url, datefile))
 
-    # print(q.__dict__['queue'])
-    print('Queue size：' + str(q.qsize()))
-    threadl = [BakScan(q) for _ in range(max_thread)]
-    for t in threadl:
-        t.start()
-
-    for t in threadl:
-        t.join()
+    print('Queue size：' + str(len(pool.__dict__)))
+    pool.close()
+    pool.join()
 
 
 if __name__ == '__main__':
@@ -135,9 +115,12 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     # Use the program default dictionary，Accurate scanning mode，Automatic dictionary generation based on domain name.
-    info_dic = ['__zep__/js.zip', ]
+    info_dic = ['__zep__/js.zip', 'faisunzip.zip', ]
 
     datefile = datetime.now().strftime('%Y%m%d_%H-%M-%S.txt')
+
+    headers = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36", }
+    timeout = 5
 
     try:
         if args.dict_file:
