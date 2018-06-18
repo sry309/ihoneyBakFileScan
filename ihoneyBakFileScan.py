@@ -97,7 +97,6 @@ def dispatcher(url_file=None, url=None, max_thread=1, dic=None):
             url = str(u) + str(info)
             pool.apply_async(vlun, args=(url, datefile))
 
-    print('Queue size：' + str(len(pool.__dict__)))
     pool.close()
     pool.join()
 

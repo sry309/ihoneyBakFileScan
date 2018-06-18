@@ -1,8 +1,8 @@
-# ihoneyBakFileScan v0.1 一个网站备份文件泄露扫描工具
+# ihoneyBakFileScan v0.2 多进程批量网站备份文件泄露扫描工具
 [![python3](https://img.shields.io/badge/python-3.5.3-brightgreen.svg?style=plastic)](https://www.python.org/)
 [![requests](https://img.shields.io/badge/requests-2.19.1-brightgreen.svg?longCache=true&style=plastic)](http://www.python-requests.org/)
 [![pip3.5](https://img.shields.io/badge/pip3.5-10.0.1-brightgreen.svg?longCache=true&style=plastic)](https://pypi.org/project/pip/)
-
+![](https://b-ssl.duitang.com/uploads/item/201607/27/20160727140514_BS4eV.thumb.700_0.jpeg)
 ## 1. 简介
 
 ##### 1.1 网站备份文件泄露可能造成的危害：
@@ -28,7 +28,7 @@ pip3.5 install requests
 ##### 1.3 工具核心：
 ```
 1. 常见后缀：
-   * '.rar', '.sql', '.zip', '.gz', '.sql.gz', '.tar.gz', '.bak', '.sql.bak' ...
+   * '.rar', '.zip', '.gz', '.sql.gz', '.tar.gz' ...
 2. 文件头识别:
    * rar:526172211a0700cf9073
    * zip:504b0304140000000800
@@ -48,63 +48,42 @@ pip3.5 install requests
    * 一种未知导出方式:               -- -------:                  2d2d202d2d2d2d2d2d2d
 4. 根据域名自动生成相关扫描字典:
     ➜  ihoneyBakFileScan python3.5 ihoneyBakFileScan.py -u https://www.ihoney.net.cn
-    Queue size：49
     [ ] https://www.ihoney.net.cn/__zep__/js.zip
-    [*] https://www.ihoney.net.cn/ihoney.bak  size:0M
-    [ ] https://www.ihoney.net.cn/ihoney.gz
-    [ ] https://www.ihoney.net.cn/ihoney.rar
-    [*] https://www.ihoney.net.cn/ihoney.sql  size:0M
-    [*] https://www.ihoney.net.cn/ihoney.sql.bak  size:0M
-    [ ] https://www.ihoney.net.cn/ihoney.sql.gz
-    [ ] https://www.ihoney.net.cn/ihoney.tar.gz
-    [ ] https://www.ihoney.net.cn/ihoney.zip
-    [ ] https://www.ihoney.net.cn/ihoney.net.cn.bak
-    [ ] https://www.ihoney.net.cn/ihoney.net.cn.gz
-    [ ] https://www.ihoney.net.cn/ihoney.net.cn.rar
-    [ ] https://www.ihoney.net.cn/ihoney.net.cn.sql
-    [ ] https://www.ihoney.net.cn/ihoney.net.cn.sql.bak
-    [ ] https://www.ihoney.net.cn/ihoney.net.cn.sql.gz
-    [ ] https://www.ihoney.net.cn/ihoney.net.cn.tar.gz
-    [ ] https://www.ihoney.net.cn/ihoney.net.cn.zip
-    [ ] https://www.ihoney.net.cn/ihoneynetcn.bak
-    [ ] https://www.ihoney.net.cn/ihoneynetcn.gz
-    [ ] https://www.ihoney.net.cn/ihoneynetcn.rar
-    [ ] https://www.ihoney.net.cn/ihoneynetcn.sql
-    [ ] https://www.ihoney.net.cn/ihoneynetcn.sql.bak
-    [ ] https://www.ihoney.net.cn/ihoneynetcn.sql.gz
-    [ ] https://www.ihoney.net.cn/ihoneynetcn.tar.gz
-    [ ] https://www.ihoney.net.cn/ihoneynetcn.zip
-    [ ] https://www.ihoney.net.cn/www.bak
-    [ ] https://www.ihoney.net.cn/www.gz
-    [ ] https://www.ihoney.net.cn/www.rar
-    [ ] https://www.ihoney.net.cn/www.sql
-    [ ] https://www.ihoney.net.cn/www.sql.bak
-    [ ] https://www.ihoney.net.cn/www.sql.gz
-    [ ] https://www.ihoney.net.cn/www.tar.gz
-    [ ] https://www.ihoney.net.cn/www.zip
-    [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.bak
-    [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.gz
+    [ ] https://www.ihoney.net.cn/faisunzip.zip
     [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.rar
-    [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.sql
-    [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.sql.bak
-    [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.sql.gz
-    [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.tar.gz
-    [*] https://www.ihoney.net.cn/www.ihoney.net.cn.zip  size:0M
-    [ ] https://www.ihoney.net.cn/wwwihoneynetcn.bak
-    [ ] https://www.ihoney.net.cn/wwwihoneynetcn.gz
     [ ] https://www.ihoney.net.cn/wwwihoneynetcn.rar
-    [ ] https://www.ihoney.net.cn/wwwihoneynetcn.sql
-    [ ] https://www.ihoney.net.cn/wwwihoneynetcn.sql.bak
-    [ ] https://www.ihoney.net.cn/wwwihoneynetcn.sql.gz
-    [ ] https://www.ihoney.net.cn/wwwihoneynetcn.tar.gz
+    [ ] https://www.ihoney.net.cn/ihoneynetcn.rar
+    [ ] https://www.ihoney.net.cn/ihoney.net.cn.rar
+    [ ] https://www.ihoney.net.cn/www.rar
+    [ ] https://www.ihoney.net.cn/ihoney.rar
+    [*] https://www.ihoney.net.cn/www.ihoney.net.cn.zip  size:0M
     [ ] https://www.ihoney.net.cn/wwwihoneynetcn.zip
+    [ ] https://www.ihoney.net.cn/ihoneynetcn.zip
+    [ ] https://www.ihoney.net.cn/ihoney.net.cn.zip
+    [ ] https://www.ihoney.net.cn/www.zip
+    [ ] https://www.ihoney.net.cn/ihoney.zip
+    [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.gz
+    [ ] https://www.ihoney.net.cn/wwwihoneynetcn.gz
+    [ ] https://www.ihoney.net.cn/ihoneynetcn.gz
+    [ ] https://www.ihoney.net.cn/ihoney.net.cn.gz
+    [ ] https://www.ihoney.net.cn/www.gz
+    [ ] https://www.ihoney.net.cn/ihoney.gz
+    [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.sql.gz
+    [ ] https://www.ihoney.net.cn/wwwihoneynetcn.sql.gz
+    [ ] https://www.ihoney.net.cn/ihoneynetcn.sql.gz
+    [ ] https://www.ihoney.net.cn/ihoney.net.cn.sql.gz
+    [ ] https://www.ihoney.net.cn/www.sql.gz
+    [ ] https://www.ihoney.net.cn/ihoney.sql.gz
+    [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.tar.gz
+    [ ] https://www.ihoney.net.cn/wwwihoneynetcn.tar.gz
+    [ ] https://www.ihoney.net.cn/ihoneynetcn.tar.gz
+    [ ] https://www.ihoney.net.cn/ihoney.net.cn.tar.gz
+    [ ] https://www.ihoney.net.cn/www.tar.gz
+    [*] https://www.ihoney.net.cn/ihoney.tar.gz
 5. 自动记录扫描成功的备份地址到以时间命名的文件
     例如 20180616_16-28-14.txt：
-    https://www.ihoney.net.cn/ihoney.sql  size:0M
+    https://www.ihoney.net.cn/ihoney.tar.gz  size:0M
     https://www.ihoney.net.cn/www.ihoney.net.cn.zip  size:0M
-    https://www.ihoney.net.cn/ihoney.bak  size:0M
-    https://www.ihoney.net.cn/ihoney.sql.bak  size:0M
-
 ```
 
 ## 2. 使用方式
@@ -131,6 +110,7 @@ pip3.5 install requests
 [2018.05.19]  新增识别Adminer导出的两种格式：baidu.sql、baodu.sql.gz
 [2018.05.31]  新增Navicat MySQL Data Transfer备份导出方式和另一种未知导出方式
 [2018.06.16]  修复支持https站扫描，并从旧项目中抽出来独立作为一个项目
+[2018.06.18]  从多线程加队列改为多进程加进程池，提升扫描速度
 ```
 
 ## 4. 联系
@@ -139,7 +119,6 @@ pip3.5 install requests
 * 联系方式： QQ 102505481
 ```
 
-##### 2018年06月16日17:23:03
+##### 2018年06月18日22:51:11
 
 
-![](https://b-ssl.duitang.com/uploads/item/201607/27/20160727140514_BS4eV.thumb.700_0.jpeg)
