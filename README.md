@@ -79,7 +79,13 @@ pip3.5 install requests
     [ ] https://www.ihoney.net.cn/ihoneynetcn.tar.gz
     [ ] https://www.ihoney.net.cn/ihoney.net.cn.tar.gz
     [ ] https://www.ihoney.net.cn/www.tar.gz
-    [*] https://www.ihoney.net.cn/ihoney.tar.gz
+    [ ] https://www.ihoney.net.cn/ihoney.tar.gz
+    [ ] https://www.ihoney.net.cn/www.ihoney.net.cn.sql
+    [ ] https://www.ihoney.net.cn/wwwihoneynetcn.sql
+    [ ] https://www.ihoney.net.cn/ihoneynetcn.sql
+    [ ] https://www.ihoney.net.cn/ihoney.net.cn.sql
+    [ ] https://www.ihoney.net.cn/www.sql
+    [ ] https://www.ihoney.net.cn/ihoney.sql
 5. 自动记录扫描成功的备份地址到以时间命名的文件
     例如 20180616_16-28-14.txt：
     https://www.ihoney.net.cn/ihoney.tar.gz  size:0M
