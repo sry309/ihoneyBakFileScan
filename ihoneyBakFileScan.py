@@ -78,15 +78,27 @@ def dispatcher(url_file=None, url=None, max_thread=1, dic=None):
     pool = multiprocessing.Pool(max_thread)
 
     for u in urllist:
-        ucp = u.strip('http://').strip('https://').strip('/')
-        www1 = ucp.split('.')
+        cport = None
+        # ucp = u.strip('https://').strip('http://')
+        if u.startswith('http://'):
+            ucp = u.lstrip('http://')
+        elif u.startswith('https://'):
+            ucp = u.lstrip('https://')
+        if '/' in ucp:
+            ucp = ucp.split('/')[0]
+        if ':' in ucp:
+            cport = ucp.split(':')[1]
+            ucp = ucp.split(':')[0]
+            www1 = ucp.split('.')
+        else:
+            www1 = ucp.split('.')
         wwwlen = len(www1)
         wwwhost = ''
         for i in range(1, wwwlen):
             wwwhost += www1[i]
 
         current_info_dic = deepcopy(dic)  # deep copy
-        suffixFormat = ['.rar', '.zip', '.gz', '.sql.gz', '.tar.gz', '.sql', ]
+        suffixFormat = ['.rar', '.zip', '.gz', '.sql.gz', '.tar.gz',]
         domainDic = [ucp, ucp.replace('.', ''), wwwhost, ucp.split('.', 1)[-1], www1[0], www1[1]]
 
         for s in suffixFormat:
@@ -114,7 +126,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     # Use the program default dictionary，Accurate scanning mode，Automatic dictionary generation based on domain name.
-    info_dic = ['__zep__/js.zip', 'faisunzip.zip', ]
+    info_dic = ['__zep__/js.zip', 'faisunzip.zip', 'wwwroot.zip', 'wwwroot.rar', 'wwwroot.tar.gz', 'wwwroot.gz', 'wwwroot.sql.zip', 'wwwroot.sql', ]
 
     datefile = datetime.now().strftime('%Y%m%d_%H-%M-%S.txt')
 
