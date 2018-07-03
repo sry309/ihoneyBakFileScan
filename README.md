@@ -32,7 +32,8 @@ pip3.5 install requests
 2. 文件头识别:
    * rar:526172211a0700cf9073
    * zip:504b0304140000000800
-   * gz：1f8b080000000000000b，也包括'.sql.gz'，'.tar.gz'
+   * gz：1f8b080000000000000b，也包括'.sql.gz'，取'1f8b0800' 作为keyword
+   * tar.gz: 1f8b0800
    * sql：每种导出方式有不同的文件头
        * Adminer：  
        * mysqldump：     
