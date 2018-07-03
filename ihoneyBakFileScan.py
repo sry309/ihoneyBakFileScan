@@ -19,15 +19,23 @@ def vlun(urltarget, df):
         content = b2a_hex(r.raw.read(10)).decode()
 
         if r.status_code == 200:
-            rarsize = int(r.headers.get('Content-Length')) // 1024 // 1024
+            rarsize = int(r.headers.get('Content-Length'))
+            if rarsize >= 1024000000:
+                unit = int(rarsize) // 1024 // 1024 / 1000
+                rarsize = str(unit) + 'G'
+            elif rarsize >= 1024000:
+                unit = int(rarsize) // 1024 // 1024
+                rarsize = str(unit) + 'M'
+            else:
+                unit = int(rarsize) // 1024
+                rarsize = str(unit) + 'K'
             if content.startswith('526172') or content.startswith('504b03') or content.startswith('1f8b080000000000000b') or content.startswith('2d2d204d7953514c') or content.startswith(
                     '2d2d207068704d794164') or content.startswith('2f2a0a204e6176696361') or content.startswith('2d2d2041646d696e6572') or content.startswith(
                 '2d2d202d2d2d2d2d2d2d') or content.startswith('2f2a0a4e617669636174') or content.startswith('1f8b0800'):
-                #  or url.endswith('.sql') or url.endswith('.sql.bak') or url.endswith('.bak')
-                logging.warning('[*] {}  size:{}M'.format(urltarget, rarsize))
+                logging.warning('[*] {}  size:{}'.format(urltarget, rarsize))
                 with open(df, 'a') as f:
                     try:
-                        f.write(str(urltarget) + '  ' + 'size:' + str(rarsize) + 'M' + '\n')
+                        f.write(str(urltarget) + '  ' + 'size:' + str(rarsize) + '\n')
                     except:
                         pass
             else:
