@@ -106,7 +106,7 @@ def dispatcher(url_file=None, url=None, max_thread=1, dic=None):
             wwwhost += www1[i]
 
         current_info_dic = deepcopy(dic)  # deep copy
-        suffixFormat = ['.rar', '.zip', '.gz', '.sql.gz', '.tar.gz', '.sql', ]
+        suffixFormat = ['.rar', '.zip', '.gz', '.sql.gz', '.tar.gz', '.sql', '.tar.tgz', ]
         domainDic = [ucp, ucp.replace('.', ''), wwwhost, ucp.split('.', 1)[-1], www1[0], www1[1]]
 
         for s in suffixFormat:
@@ -134,7 +134,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     # Use the program default dictionary，Accurate scanning mode，Automatic dictionary generation based on domain name.
-    info_dic = ['__zep__/js.zip', 'faisunzip.zip', 'wwwroot.zip', 'wwwroot.rar', 'wwwroot.tar.gz', 'wwwroot.gz', 'wwwroot.sql.zip', 'wwwroot.sql', ]
+    info_dic = ['__zep__/js.zip', 'faisunzip.zip', 'wwwroot.zip', 'wwwroot.rar', 'wwwroot.tar.gz', 'wwwroot.gz', 'wwwroot.sql.zip', 'wwwroot.sql','backup.zip', 'bbs.zip' ]
 
     datefile = datetime.now().strftime('%Y%m%d_%H-%M-%S.txt')
 
