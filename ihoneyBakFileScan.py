@@ -14,6 +14,16 @@ logging.basicConfig(level=logging.WARNING, format="%(message)s")
 
 
 def vlun(urltarget, df):
+    rar_byte = '526172'
+    zip_byte = '504b03'
+    gz_byte = '1f8b080000000000000b'
+    mysqldump_byte = '2d2d204d7953514c'
+    phpmyadmin_byte = '2d2d207068704d794164'
+    navicat_byte = '2f2a0a204e6176696361'
+    adminer_byte = '2d2d2041646d696e6572'
+    other_byte = '2d2d202d2d2d2d2d2d2d'
+    navicat_MDT_byte = '2f2a0a4e617669636174'
+    tar_gz_byte = '1f8b0800'
     try:
         r = requests.get(url=urltarget, headers=headers, timeout=timeout, allow_redirects=False, stream=True, verify=False)
         content = b2a_hex(r.raw.read(10)).decode()
@@ -29,9 +39,10 @@ def vlun(urltarget, df):
             else:
                 unit = int(rarsize) // 1024
                 rarsize = str(unit) + 'K'
-            if content.startswith('526172') or content.startswith('504b03') or content.startswith('1f8b080000000000000b') or content.startswith('2d2d204d7953514c') or content.startswith(
-                    '2d2d207068704d794164') or content.startswith('2f2a0a204e6176696361') or content.startswith('2d2d2041646d696e6572') or content.startswith(
-                '2d2d202d2d2d2d2d2d2d') or content.startswith('2f2a0a4e617669636174') or content.startswith('1f8b0800'):
+            if content.startswith(rar_byte) or content.startswith(zip_byte) or content.startswith(gz_byte) or content.startswith(
+                    mysqldump_byte) or content.startswith(
+                    phpmyadmin_byte) or content.startswith(navicat_byte) or content.startswith(adminer_byte) or content.startswith(
+                other_byte) or content.startswith(navicat_MDT_byte) or content.startswith(tar_gz_byte):
                 logging.warning('[*] {}  size:{}'.format(urltarget, rarsize))
                 with open(df, 'a') as f:
                     try:
@@ -134,7 +145,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     # Use the program default dictionary，Accurate scanning mode，Automatic dictionary generation based on domain name.
-    info_dic = ['__zep__/js.zip', 'faisunzip.zip', 'wwwroot.zip', 'wwwroot.rar', 'wwwroot.tar.gz', 'wwwroot.gz', 'wwwroot.sql.zip', 'wwwroot.sql','backup.zip', 'bbs.zip' ]
+    info_dic = ['__zep__/js.zip', 'faisunzip.zip', 'wwwroot.zip', 'wwwroot.rar', 'wwwroot.tar.gz', 'wwwroot.gz', 'wwwroot.sql.zip', 'wwwroot.sql', 'backup.zip',
+                'bbs.zip']
 
     datefile = datetime.now().strftime('%Y%m%d_%H-%M-%S.txt')
 
